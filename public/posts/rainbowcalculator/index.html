@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RainbowCalculator API</title>
+        <link rel="stylesheet" href="/style.css?v=1.0">
+        <meta name="description" content="Personal website of Lazar Gosic, software developer based in Switzerland.">
+        <meta name="generator" content="Eleventy">
+    </head>
+    <body>
+
+        <div class="header-content">
+            <div class="aligner">
+                <div style="border-right:1px solid white;padding-right:2em;">
+                    <img class="post-avatar" src="/assets/img/face.webp?v=1.1" width="100px" height="100px" alt="Lazar Gosic Portrait">
+                </div>
+                <div style="padding-left:2em;">
+                    <span style="font-size:24px;">👋 Hi I'm <strong>Lazar Gosic</strong>
+                    </span>
+                    <br><br> I'm an <strong>developer</strong> located in Switzerland</div>
+
+            </div>
+
+            <nav>
+                <a href="/">Me</a>
+                <span class="link-padding">∘</span>
+                <a href="/projects">Projects</a>
+                <span class="link-padding">∘</span>
+                <a href="/contact">Contact</a>
+            </nav>
+        </div>
+
+        <div class="content">
+            <main>
+                <p>Tha goal of this library is to calculate the mana source requirements (lands and mana generating artifacts) of a regular EDH/Commander deck in the trading card game Magic: the Gathering.</p>
+<h2>API Setup</h2>
+<p>It's a simple API written in .NET 6 with only two endpoints, one of which is only used for testing purposes. This way any client can call the API and implement it the way they see fit. I chose to do it with a <a href="https://discord.com/developers/docs/intro">Discord bot</a>. See <a href="https://github.com/LazarQt/RainbowFrog">this repository</a> on how it works and try it out yourself!</p>
+<h2>API Call</h2>
+<p><em>Request</em></p>
+<p><code>POST: host:port/</code></p>
+<p>Parameters:</p>
+<p><code>Decklist</code> string array of the entire deck
+<code>Ignorelands</code> string array of lands that should be ignored (in case user does not own this particular land)</p>
+<p>Endpoint for making a simple get request and ensuring the server is running correctly:</p>
+<p><em>Request</em></p>
+<p><code>GET /api/ping/</code></p>
+<pre><code>curl -i -H 'Accept: application/json' http://host:port/api/ping/
+</code></pre>
+<p><em>Response</em></p>
+<pre><code>HTTP/1.1 200 OK
+Status: 200 OK
+Content-Type: application/json
+
+{
+    id: 1,
+    name: &quot;Ping successful&quot;
+}
+</code></pre>
+<p>Endpoint to request mana base suggestion:</p>
+<p><em>Request</em></p>
+<p><code>POST /api/manabase/</code></p>
+<pre><code>curl -i -H 'Accept: application/json' -d 
+'decklist=[&quot;Card 1&quot;,&quot;Card 2&quot;]&amp;ignorelands=[&quot;Badlands&quot;]' http://host:port/api/manabase/
+</code></pre>
+<p><em>Response</em></p>
+<pre><code>HTTP/1.1 201 Created
+Status: 200 Created
+Connection: close
+Content-Type: application/json
+
+{
+    &quot;data&quot;: 
+    {
+        &quot;error&quot;: null,
+        &quot;averageManaValue&quot;: &quot;2.345&quot;,
+        &quot;relevantCardList&quot;: [
+            &quot;Card A&quot;,
+            &quot;Card B&quot;,
+            &quot;Card C&quot;
+        ],
+        &quot;cardsNotFound&quot;: [],
+        &quot;excludedCards&quot;: [
+            &quot;Card X&quot;,
+            &quot;Card Y&quot;,
+            &quot;Card Z&quot;
+        ],
+        &quot;removedLands&quot;: [
+            &quot;Land 1&quot;,
+            &quot;Land 2&quot;
+        ],
+        &quot;sources&quot;: [
+            &quot;1 Land A&quot;,
+            &quot;2 Land B&quot;
+        ],
+        &quot;sourcesCount&quot;: 2,
+        &quot;colorRequirementsErrors&quot;: [
+            &quot;Ignoring hybrid mana cost of this card&quot;,
+        ],
+        &quot;colorRequirements&quot;: [
+            {
+                &quot;color&quot;: &quot;b&quot;,
+                &quot;amount&quot;: 33,
+                &quot;amountFulfilled&quot;: 33,
+                &quot;isFulfilled&quot;: true,
+                &quot;cardResponsible&quot;: &quot;Card Alpha&quot;
+            },
+            {
+                &quot;color&quot;: &quot;g&quot;,
+                &quot;amount&quot;: 29,
+                &quot;amountFulfilled&quot;: 33,
+                &quot;isFulfilled&quot;: true,
+                &quot;cardResponsible&quot;: &quot;Card Beta&quot;
+            }
+        ],
+        &quot;manarockRatio&quot;: {
+            &quot;landsWithoutRocks&quot;: 38,
+            &quot;minMv&quot;: 2.08,
+            &quot;maxMv&quot;: 2.4,
+            &quot;manaRocks&quot;: 6,
+            &quot;lands&quot;: 35
+        }
+    }
+}
+</code></pre>
+<p><em>Response contents</em></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error</td>
+<td>If calculation throws an error, this is where it is shown</td>
+</tr>
+<tr>
+<td>averageManaValue</td>
+<td>Average mana value of deck</td>
+</tr>
+<tr>
+<td>relevantCardList</td>
+<td>All the cards that are &quot;relevant&quot; to the calculation (some cards are excluded, based on methodology)</td>
+</tr>
+<tr>
+<td>cardsNotFound</td>
+<td>Cards that are not found (typo?)</td>
+</tr>
+<tr>
+<td>excludedCards</td>
+<td>Cards taht are excluded because they are not required for calculation</td>
+</tr>
+<tr>
+<td>removedLands</td>
+<td>Lands that were removed prior to calculation in case user forgot to take them out</td>
+</tr>
+<tr>
+<td>sources</td>
+<td>Suggested sources</td>
+</tr>
+<tr>
+<td>sourcesCount</td>
+<td>How many sources there are</td>
+</tr>
+<tr>
+<td>colorRequirementsErrors</td>
+<td>If a card is NOT taken into account when it comes to calculations, this is where it is shown why</td>
+</tr>
+<tr>
+<td>colorRequirements</td>
+<td>Color requirements for each color</td>
+</tr>
+<tr>
+<td>manarockRatio</td>
+<td>How many lands and mana rocks are needed</td>
+</tr>
+</tbody>
+</table>
+<h2>Methodology</h2>
+<p>The full readme including the methodology how the calculations are made can be found <a href="https://github.com/LazarQt/RainbowCalculator">here</a> on the GitHub project repository.</p>
+
+            </main>
+        </div>
+
+        <div class="footer">
+            <p>©️ 2022 Lazar Gosic</p>
+        </div>
+    </body>
+</html>

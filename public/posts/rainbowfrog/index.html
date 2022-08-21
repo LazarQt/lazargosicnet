@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Discord Bot for Rainbow Calculator API</title>
+        <link rel="stylesheet" href="/style.css?v=1.0">
+        <meta name="description" content="Personal website of Lazar Gosic, software developer based in Switzerland.">
+        <meta name="generator" content="Eleventy">
+    </head>
+    <body>
+
+        <div class="header-content">
+            <div class="aligner">
+                <div style="border-right:1px solid white;padding-right:2em;">
+                    <img class="post-avatar" src="/assets/img/face.webp?v=1.1" width="100px" height="100px" alt="Lazar Gosic Portrait">
+                </div>
+                <div style="padding-left:2em;">
+                    <span style="font-size:24px;">👋 Hi I'm <strong>Lazar Gosic</strong>
+                    </span>
+                    <br><br> I'm an <strong>developer</strong> located in Switzerland</div>
+
+            </div>
+
+            <nav>
+                <a href="/">Me</a>
+                <span class="link-padding">∘</span>
+                <a href="/projects">Projects</a>
+                <span class="link-padding">∘</span>
+                <a href="/contact">Contact</a>
+            </nav>
+        </div>
+
+        <div class="content">
+            <main>
+                <p>This is the Discord Bot which uses the Rainbow Calculator API to generate mana bases.</p>
+<h2>Technical Overview</h2>
+<img src="https://user-images.githubusercontent.com/5879928/185720951-d76c3490-7405-4358-b9ee-20694a09960c.png" style="max-width: 100%;height: auto;" />
+<p>The development setup uses the power of automatic deployments to automatize the entire process apart from checking in the code to GitHub repository.</p>
+<p>Heroku is used as a deployment and hosting platform which hosts both the API that makes the calculations and the Discord Bot that communicates between the calculator API and Discord API. Through Discord API user messages can be read and responded to.</p>
+<h2>Bot testing</h2>
+<p>If you want to try it out join my discord server by using https://discord.gg/uKrM6g2kj9.
+The bot is not public (yet) and can only be used there.</p>
+<p>Right now all the basic functionalities are implemented, feedback is appreciated.</p>
+<h2>Command</h2>
+<p>To use the bot, simply type /mana to bring up the bot and add the entire deck list separated by 1s.</p>
+<p><em>1s because all the major deck sites export the deck by putting a 1 in front of the card name</em></p>
+<p>There is an option to ignore lands, in case someone doesn't want to play EDH with their expensive dual lands or similar. In that case simply add a list of lands in addition to the deck list, separated by |s.</p>
+<p><em>The character | is used because there are a lot of lands with special characters, but this one should never be used by the game creators.</em></p>
+<p><strong>Command</strong></p>
+<p><code>/mana [Decklist separated by 1s - required] [ignore lands, separated by |s - optional]</code></p>
+<p><strong>Example</strong></p>
+<p><code>/mana [1 Adeliz, the Cinder Wind 1 Brainstorm 1 Lightning Bolt] [Volcanic Island | Mana Confluence]</code></p>
+
+            </main>
+        </div>
+
+        <div class="footer">
+            <p>©️ 2022 Lazar Gosic</p>
+        </div>
+    </body>
+</html>
